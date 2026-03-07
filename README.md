@@ -1,5 +1,5 @@
 
-# Script de la Base de Datos
+# Script de avance del proyecto (aun no esta correjido)
 ```sql
 CREATE DATABASE gestion_reclamos;
 
