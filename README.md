@@ -1,5 +1,5 @@
 
-# Script de avance del proyecto (aun no esta correjido)
+# Script de avance del proyecto (ya funciona el rls)
 ```sql
 CREATE DATABASE gestion_reclamos;
 
@@ -268,7 +268,7 @@ CREATE INDEX idx_encuesta_reclamo ON EncuestaSatisfaccion(id_reclamo);
 
 --
 
---consultas
+##--consultas
 --cliente, reclamo, empleado, empresa, categoria, estado reclamo
 SELECT p.nombres as nombre_cliente, r.descripcion as reclamo, pe.nombres as nombre_empleado,
 e.nombre as nombre_empresa, cr.nombre as categoria_reclamo, er. nombre as estado_reclamo
@@ -376,7 +376,7 @@ INTERSECT
 SELECT r.id_cliente FROM Reclamo r
 WHERE r.id_categoria = 2;
 
---funciones y triggers
+##--funciones y triggers
 
 CREATE OR REPLACE FUNCTION verificar_riesgo_cliente()
 RETURNS TRIGGER AS $$
@@ -479,7 +479,7 @@ ON Seguimiento
 FOR EACH ROW
 EXECUTE FUNCTION fun_auditoria_general();
 
---vista normal guarda una consulta
+##--vista normal guarda una consulta
 
 CREATE VIEW v_reporte_reclamos AS
 SELECT
@@ -511,7 +511,7 @@ GROUP BY c.id_persona, p.nombres, p.apellidos;
 
 SELECT * FROM v_promedio_satisfaccion;
 
---Vista materializada
+#--Vista materializada
 
 CREATE MATERIALIZED VIEW mv_estadisticas_reclamos AS
 SELECT
@@ -544,4 +544,49 @@ GROUP BY c.id_persona, p.nombres, p.apellidos;
 REFRESH MATERIALIZED VIEW vm_promedio_satisfaccion_clientes;
 
 SELECT * FROM vm_promedio_satisfaccion_clientes;
+
+##rls
+--Crear roles del sistema
+CREATE ROLE admin LOGIN PASSWORD 'sprite123@UPDS';
+CREATE ROLE empleado LOGIN PASSWORD 'empleado456@UPDS';
+
+--Dar permisos a las tablas
+--admin
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO admin; --El admin puede: SELECT INSERT UPDATE DELETE TRUNCATE en todas las tablas.
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO admin; --Permite usar autoincrementos (SERIAL / IDENTITY). Sin esto los INSERT fallan.
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO admin; --Hace que las tablas futuras también tengan permisos para admin.
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO admin; --Lo mismo pero para secuencias futuras.
+
+GRANT INSERT ON auditoria_general TO admin;
+--empleado
+GRANT INSERT ON auditoria_general TO empleado;
+
+GRANT SELECT, UPDATE ON Reclamo TO empleado; --El empleado puede: ver reclamos editar reclamos Pero RLS controlará cuáles.
+GRANT INSERT ON Reclamo TO empleado; --El empleado puede: crear reclamos Pero RLS controlará cuáles.
+GRANT SELECT, INSERT ON Seguimiento TO empleado;-- El empleado puede: ver seguimientos, registrar seguimiento
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO empleado; --Permite usar autoincrementos. Sin esto los INSERT fallan.
+
+--Activar RLS
+ALTER TABLE Reclamo ENABLE ROW LEVEL SECURITY; --Activa seguridad por filas.
+ALTER TABLE Seguimiento ENABLE ROW LEVEL SECURITY; --Activa seguridad por filas.
+
+
+--Crear política para administrador
+CREATE POLICY rls_admin_reclamo ON Reclamo FOR ALL TO admin USING (true) WITH CHECK (true); -- USING (true) Puede ver todas las filas. WITH CHECK (true) Puede insertar o modificar cualquier fila.
+
+CREATE POLICY rls_admin_seguimiento ON Seguimiento FOR ALL TO admin USING (true) WITH CHECK (true); 
+
+--Política RLS para empleados
+--app.empleado_id (Esto simula una aplicación.)
+CREATE POLICY rls_empleado_reclamo ON Reclamo
+FOR SELECT TO empleado USING (id_empleado = current_setting('app.empleado_id')::INT); --Solo puede ver reclamos que le pertenecen.
+
+CREATE POLICY rls_empleado_insert_reclamo
+ON Reclamo FOR INSERT TO empleado WITH CHECK (id_empleado = current_setting('app.empleado_id')::INT); --Permite insertar solo si el reclamo pertenece al empleado.
+
+--Política para seguimientos
+CREATE POLICY rls_empleado_seguimiento
+ON Seguimiento FOR SELECT TO empleado
+USING (id_reclamo IN ( SELECT id_reclamo FROM Reclamo WHERE id_empleado = current_setting('app.empleado_id')::INT)); --Permite ver seguimientos solo de reclamos propios.
 ```
