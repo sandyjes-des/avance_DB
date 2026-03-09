@@ -1,5 +1,6 @@
 
 # Script de avance del proyecto (ya funciona el rls)
+# se corrigio la tabla de historico registro
 ```sql
 CREATE DATABASE gestion_reclamos;
 
@@ -90,10 +91,12 @@ CREATE TABLE EncuestaSatisfaccion (
 );
 
 CREATE TABLE Historico_Riesgo (
-    id_cliente INT PRIMARY KEY,
+    id_historicoriesgo SERIAL PRIMARY KEY,
+    id_cliente int NOT NULL,
     nombre_cliente VARCHAR(200),
     promedio_calificacion NUMERIC(4,2),
-    fecha_registro TIMESTAMP DEFAULT NOW()
+    fecha_registro TIMESTAMP DEFAULT NOW(),
+    CONSTRAINT FK_historico_riesgo_cliente FOREIGN KEY (id_cliente) REFERENCES cliente(id_persona)
 );
 
 CREATE TABLE auditoria_general (
