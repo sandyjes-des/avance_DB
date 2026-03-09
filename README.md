@@ -584,6 +584,8 @@ CREATE POLICY rls_admin_seguimiento ON Seguimiento FOR ALL TO admin USING (true)
 --app.empleado_id (Esto simula una aplicación.)
 CREATE POLICY rls_empleado_reclamo ON Reclamo
 FOR SELECT TO empleado USING (id_empleado = current_setting('app.empleado_id')::INT); --Solo puede ver reclamos que le pertenecen.
+#--ejemplo set app.empleado_id='11';
+
 
 CREATE POLICY rls_empleado_insert_reclamo
 ON Reclamo FOR INSERT TO empleado WITH CHECK (id_empleado = current_setting('app.empleado_id')::INT); --Permite insertar solo si el reclamo pertenece al empleado.
