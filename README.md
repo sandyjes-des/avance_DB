@@ -136,7 +136,7 @@ INSERT INTO Empresa (nombre, nit, direccion, telefono, email, estado) VALUES
 ('Cotas R.L.', '20505060708', 'Av. Cristóbal de Mendoza 600, Santa Cruz de la Sierra', '3-3520000', 'info@cotas.com.bo', 'activo'),
 ('Fexpocruz', '20707080910', 'Av. Roca y Coronado 1230, Santa Cruz de la Sierra', '3-3380000', 'contacto@fexpocruz.com.bo', 'activo');
 
--- 2. PERSONA (15 registros)
+-- 2. PERSONA (30 registros)
 INSERT INTO Persona (nombres, apellidos, carnet, email, telefono, edad) VALUES
 ('Juan Carlos', 'Pérez Gómez', '12345678', 'juan.perez@gmail.com', '999888777', 35),
 ('María Elena', 'López Fernández', '87654321', 'maria.lopez@yahoo.com', '988777666', 28),
@@ -158,6 +158,17 @@ INSERT INTO Persona (nombres, apellidos, carnet, email, telefono, edad) VALUES
 ('Valeria Sofía', 'Paredes Luna', '11223355', 'valeria.paredes@hotmail.com', '966554433', 26),
 ('Sergio Alejandro', 'Núñez Campos', '44332266', 'sergio.nunez@outlook.com', '955443322', 41),
 ('Gabriela Fernanda', 'Quispe Mamani', '55667799', 'gabriela.quispe@gmail.com', '944332211', 32);
+INSERT INTO Persona (nombres, apellidos, carnet, email, telefono, edad) VALUES
+('Roberto Carlos', 'Mamani Condori', '6543210', 'roberto.mamani@gmail.com', '71020304', 30),
+('Sandra Paola', 'Vargas Machicado', '7890123', 'sandra.vargas@outlook.com', '72030405', 26),
+('Wilson Javier', 'Choque Huanca', '4567890', 'wilson.choque@hotmail.com', '73040506', 38),
+('Elizabeth', 'Gutiérrez Soliz', '3210987', 'eli.gutierrez@yahoo.com', '74050607', 33),
+('Hugo Daniel', 'Mendoza Claros', '1029384', 'hugo.mendoza@gmail.com', '75060708', 40),
+('Claudia Ximena', 'Rojas Justiniano', '5647382', 'claudia.rojas@uagrm.edu.bo', '76070809', 22),
+('Marco Antonio', 'Pinto Saucedo', '8473625', 'marco.pinto@gmail.com', '77080910', 45),
+('Tatiana Belén', 'Suárez Méndez', '9384756', 'tati.suarez@gmail.com', '78091011', 29),
+('Jorge Luis', 'Escobar Ticona', '2938475', 'jorge.escobar@hotmail.com', '79101112', 31),
+('Mariana', 'Antelo Paz', '5060708', 'mariana.antelo@gmail.com', '70111213', 27);
 
 -- 3. CLIENTE (10 registros) – asociados a empresas
 INSERT INTO Cliente (id_persona, id_empresa, fecha_registro) VALUES
@@ -171,6 +182,12 @@ INSERT INTO Cliente (id_persona, id_empresa, fecha_registro) VALUES
 (8, 1, '2025-03-10 10:00:00'),
 (9, 3, '2025-03-12 12:00:00'),
 (10, 2, '2025-03-15 15:30:00');
+  INSERT INTO Cliente (id_persona, id_empresa, fecha_registro) VALUES
+(21, 4, '2026-01-10 09:00:00'), -- Toyosa
+(22, 5, '2026-01-12 11:30:00'), -- Farmacorp
+(23, 6, '2026-01-15 14:00:00'), -- Banco Mercantil
+(24, 7, '2026-01-18 10:45:00'), -- Hipermaxi
+(25, 8, '2026-01-20 16:20:00'); -- Entel
 
 -- 4. EMPLEADO (5 registros) – algunos asignados a reclamos
 INSERT INTO Empleado (id_persona, id_empresa, cargo, estado) VALUES
@@ -184,6 +201,12 @@ INSERT INTO Empleado (id_persona, id_empresa, cargo, estado) VALUES
 (18, 6, 'Analista de calidad', 'activo'),
 (19, 7, 'Supervisor de ventas', 'activo'),
 (20, 8, 'Atención al cliente', 'inactivo');
+INSERT INTO Empleado (id_persona, id_empresa, cargo, estado) VALUES
+(26, 1, 'Gestor de Reclamos Senior', 'activo'), -- Tigo
+(27, 2, 'Jefe de Logística', 'activo'),       -- PIL
+(28, 9, 'Técnico de Redes HFC', 'activo'),    -- Cotas
+(29, 10, 'Coordinador de Eventos', 'activo'),  -- Fexpocruz
+(30, 6, 'Cajero Principal', 'activo');        -- Banco Mercantil
 
 -- 5. CATEGORIA RECLAMO (4 registros)
 INSERT INTO CategoriaReclamo ( nombre, descripcion) VALUES
@@ -223,6 +246,12 @@ INSERT INTO Reclamo (id_cliente, id_categoria, id_estado, id_empleado, descripci
 (8, 3, 3, NULL, 'Mala atención telefónica', '2026-02-18 09:20:00', 'baja'),
 (9, 4, 1, 13, 'Producto no cumple especificaciones', '2026-02-18 11:10:00', 'media'),
 (10, 2, 2, 12, 'Factura sin número de RUC', '2026-02-19 08:30:00', 'alta');
+INSERT INTO Reclamo (id_cliente, id_categoria, id_estado, id_empleado, descripcion, fecha_reclamo, prioridad) VALUES
+(21, 6, 1, 13, 'Demora excesiva en la entrega del vehículo nuevo', '2026-03-01 09:15:00', 'media'),
+(22, 9, 1, NULL, 'Medicamento con fecha de vencimiento próxima', '2026-03-02 10:30:00', 'alta'),
+(23, 2, 1, 12, 'No puedo visualizar mi extracto bancario en la app', '2026-03-03 14:00:00', 'alta'),
+(24, 3, 2, 30, 'Trato descortés en caja de sucursal norte', '2026-03-04 11:20:00', 'baja'),
+(25, 1, 1, 28, 'Sin señal de internet hace 24 horas', '2026-03-05 08:00:00', 'alta');
 
 -- 8. SEGUIMIENTO (10 registros) – varios reclamos tienen seguimiento
 INSERT INTO Seguimiento (id_reclamo, numero_seguimiento, comentario, fecha) VALUES
@@ -238,6 +267,12 @@ INSERT INTO Seguimiento (id_reclamo, numero_seguimiento, comentario, fecha) VALU
 (8, 1, 'Se registró queja en el área correspondiente', '2026-02-26 10:00:00'),
 (9, 1, 'Se solicitó documentación al cliente', '2026-03-05 12:00:00'),
 (10, 1, 'Se generó nueva factura', '2026-03-19 09:00:00');
+INSERT INTO Seguimiento (id_reclamo, numero_seguimiento, comentario, fecha) VALUES
+(11, 1, 'Se verificó el pedido de importación con logística', '2026-03-01 15:00:00'),
+(12, 1, 'Se solicitó foto del lote del producto al cliente', '2026-03-02 12:00:00'),
+(13, 1, 'Soporte TI está revisando la base de datos de la App', '2026-03-03 16:30:00'),
+(14, 1, 'Se llamó al supervisor de la sucursal para informe', '2026-03-04 13:00:00'),
+(15, 1, 'Se asignó técnico de cuadrilla para revisión de cables', '2026-03-05 09:45:00');
 
 -- 9. ENCUESTA SATISFACCION (10 registros) – una por cada reclamo
 INSERT INTO EncuestaSatisfaccion (id_reclamo, calificacion, comentario) VALUES
@@ -251,6 +286,12 @@ INSERT INTO EncuestaSatisfaccion (id_reclamo, calificacion, comentario) VALUES
 (8, 1, 'Pésima atención, no volveré'),
 (9, 4, 'Bien, aunque demoraron'),
 (10, 5, 'Perfecto, factura corregida en el día');
+INSERT INTO EncuestaSatisfaccion (id_reclamo, calificacion, comentario) VALUES
+(11, 3, 'Tardaron mucho en dar una respuesta clara'),
+(12, 5, 'Cambiaron el producto sin costo, excelente'),
+(13, 4, 'Funciona la app ahora, pero demoraron'),
+(14, 2, 'Solo me pidieron disculpas, no hubo solución real'),
+(15, 5, 'El técnico llegó puntual y lo arregló rápido');
 
 --creacion de indices 
 
@@ -514,6 +555,38 @@ GROUP BY c.id_persona, p.nombres, p.apellidos;
 
 SELECT * FROM v_promedio_satisfaccion;
 
+-- VISTA 3: Eficiencia por Empresa (Porcentaje de reclamos resueltos)
+CREATE OR REPLACE VIEW v_eficiencia_por_empresa AS
+SELECT 
+    e.nombre AS empresa,
+    COUNT(r.id_reclamo) AS total_reclamos,
+    COUNT(CASE WHEN er.nombre = 'Resuelto' THEN 1 END) AS resueltos,
+    ROUND((COUNT(CASE WHEN er.nombre = 'Resuelto' THEN 1 END)::NUMERIC / COUNT(r.id_reclamo)) * 100, 2) || '%' AS porcentaje_exito
+FROM Empresa e
+JOIN Cliente c ON e.id_empresa = c.id_empresa
+JOIN Reclamo r ON c.id_persona = r.id_cliente
+JOIN EstadoReclamo er ON r.id_estado = er.id_estado
+GROUP BY e.nombre;
+
+SELECT * FROM v_eficiencia_por_empresa;
+
+-- VISTA 4: Ranking de Empleados con mejor valoración
+CREATE OR REPLACE VIEW v_ranking_empleados_estrella AS
+SELECT 
+    p.nombres || ' ' || p.apellidos AS empleado,
+    e.cargo,
+    COUNT(es.id_encuesta) AS encuestas_recibidas,
+    ROUND(AVG(es.calificacion), 2) AS promedio_puntos
+FROM Empleado e
+JOIN Persona p ON e.id_persona = p.id_persona
+JOIN Reclamo r ON e.id_persona = r.id_empleado
+JOIN EncuestaSatisfaccion es ON r.id_reclamo = es.id_reclamo
+GROUP BY p.nombres, p.apellidos, e.cargo
+HAVING AVG(es.calificacion) >= 4
+ORDER BY promedio_puntos DESC;
+
+SELECT * from v_ranking_empleados_estrella;
+
 #--Vista materializada
 
 CREATE MATERIALIZED VIEW mv_estadisticas_reclamos AS
@@ -547,6 +620,82 @@ GROUP BY c.id_persona, p.nombres, p.apellidos;
 REFRESH MATERIALIZED VIEW vm_promedio_satisfaccion_clientes;
 
 SELECT * FROM vm_promedio_satisfaccion_clientes;
+
+##procedimientos
+-- PROCEDIMIENTO 1: Registrar un reclamo con transacción y manejo de errores
+CREATE OR REPLACE PROCEDURE pr_registrar_reclamo_completo(
+    p_id_cliente INT,
+    p_id_categoria INT,
+    p_descripcion TEXT,
+    p_prioridad VARCHAR
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- El bloque BEGIN/END interno actúa como el control de transacción en funciones
+    INSERT INTO Reclamo (id_cliente, id_categoria, id_estado, descripcion, prioridad)
+    VALUES (p_id_cliente, p_id_categoria, 1, p_descripcion, p_prioridad); -- 1 es 'Pendiente'
+
+    RAISE NOTICE 'Reclamo registrado exitosamente para el cliente %', p_id_cliente;
+
+EXCEPTION
+    WHEN foreign_key_violation THEN
+        RAISE EXCEPTION 'Error: El cliente o la categoría no existen en la base de datos.';
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'Error inesperado: %', SQLERRM;
+END;
+$$;
+
+-- PROCEDIMIENTO 2: Asignar empleado a reclamo y actualizar estado
+CREATE OR REPLACE PROCEDURE pr_asignar_atencion(
+    p_id_reclamo INT,
+    p_id_empleado INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Verificamos si el reclamo existe
+    IF NOT EXISTS (SELECT 1 FROM Reclamo WHERE id_reclamo = p_id_reclamo) THEN
+        RAISE EXCEPTION 'El reclamo con ID % no existe.', p_id_reclamo;
+    END IF;
+
+    -- Actualizamos el reclamo (Transacción)
+    UPDATE Reclamo 
+    SET id_empleado = p_id_empleado, id_estado = 2 -- 2 es 'En proceso'
+    WHERE id_reclamo = p_id_reclamo;
+
+    INSERT INTO Seguimiento (id_reclamo, numero_seguimiento, comentario)
+    VALUES (p_id_reclamo, (SELECT COALESCE(MAX(numero_seguimiento), 0) + 1 FROM Seguimiento WHERE id_reclamo = p_id_reclamo), 'Reclamo asignado a personal técnico.');
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'No se pudo asignar el reclamo: %', SQLERRM;
+END;
+$$;
+
+-- PROCEDIMIENTO 3: Cerrar reclamo y registrar encuesta
+CREATE OR REPLACE PROCEDURE pr_cerrar_reclamo_satisfaccion(
+    p_id_reclamo INT,
+    p_calificacion INT,
+    p_comentario_encuesta TEXT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Actualizar estado a Resuelto
+    UPDATE Reclamo SET id_estado = 3 WHERE id_reclamo = p_id_reclamo;
+
+    -- Insertar encuesta
+    INSERT INTO EncuestaSatisfaccion (id_reclamo, calificacion, comentario)
+    VALUES (p_id_reclamo, p_calificacion, p_comentario_encuesta);
+
+EXCEPTION
+    WHEN check_violation THEN
+        RAISE EXCEPTION 'La calificación debe estar entre 1 y 5.';
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'Error al cerrar el reclamo: %', SQLERRM;
+END;
+$$;
 
 ##rls
 --Crear roles del sistema
